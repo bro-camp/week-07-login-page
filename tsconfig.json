@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig-preset",
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "#global/*": ["global/*"],
+      "#lib/*": ["lib/*"],
+      "#types/*": ["types/*"],
+      "#routers/*": ["routers/*"],
+      "#models/*": ["models/*"],
+      "#views/*": ["views/*"],
+      "#controllers/*": ["controllers/*"],
+      "#root/*": ["./*"],
+      "#sroot/*": ["./../*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}

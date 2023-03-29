@@ -1,0 +1,59 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "npm: start:dev",
+      "detail": "nodemon",
+      "type": "npm",
+      "script": "start:dev",
+      "options": {
+        "env": {
+          "NODE_ENV": "development"
+        }
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": true
+      }
+    },
+    {
+      "label": "npm: tsc",
+      "detail": "tsc",
+      "type": "npm",
+      "script": "tsc",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": true
+      }
+    },
+    {
+      "label": "npm: build-helper",
+      "detail": "node ./scripts/build-helper.js",
+      "type": "npm",
+      "script": "build-helper",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": true
+      }
+    },
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    // `baseUrl` must be placed on the extending configuration in devland, or paths won't be recognized
+    "esModuleInterop": true,
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "noEmit": false,
+    "resolveJsonModule": true,
+    // Avoid cross-os errors due to inconsistent file casing
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": false,
+    "strict": true,
+    "target": "esnext",
+    "isolatedModules": true,
+    "useDefineForClassFields": true,
+    // "lib": ["esnext", "dom"],
+    "types": ["node"],
+    "outDir": "build",
+    "rootDir": "src"
+  }
+}
