@@ -12,7 +12,6 @@ const addDirCallback = async (changedPath) => {
 
   try {
     await fse.ensureDir(destPath);
-    // console.log('Success!');
   } catch (err) {
     console.error(`Error while ensuring directory: ${err}`);
   }
@@ -24,7 +23,6 @@ const addCallback = async (changedPath) => {
 
   try {
     await fse.copy(changedPath, destPath);
-    // console.log('Success!');
   } catch (err) {
     console.error(`Error while copying file: ${err}`);
   }
@@ -38,7 +36,6 @@ const unlinkCallback = async (changedPath) => {
 
   try {
     await fse.remove(destPath);
-    // console.log('Success!');
   } catch (err) {
     console.error(`Error while removing path: ${err}`);
   }

@@ -3,7 +3,6 @@ import bcrypt from 'bcrypt';
 import IUser from '#types/user-type';
 import { addUser, getUser, checkUser } from '#lib/db/user';
 import { viewsDirPath } from '#global/paths';
-// import { IGetUserError } from '#types/lib/db/user';
 
 export const rootGet: RequestHandler = (_req, res) => {
   res.redirect('/home');
@@ -45,11 +44,12 @@ export const loginPost: RequestHandler = async (req, res) => {
       }
 
       req.session.isAuth = true;
+      req.session.username = user.username;
+      req.session.displayName = user.displayName;
+      req.session.email = user.email;
       res.redirect('/home');
     });
   });
-
-  // res.status(200).send('Post login');
 };
 
 export const signupGet: RequestHandler = (_req, res) => {
@@ -73,9 +73,7 @@ export const signupPost: RequestHandler = async (req, res) => {
 
     addUser(info)
       .then(() => res.render(`${viewsDirPath}/pages/signup-success`))
-      // .catch((err) => res.status(200).send(`ERROR:\n${err}`));
-      // .catch((err) => res.status(200).send(`ERROR:\n${err}`));
-      .catch((errorMessage) => res.render(`${viewsDirPath}/pages/signup-failure`, {
+      .catch((errorMessage) => res.render(`${viewsDirPath}/pages/signup`, {
         errorMessage,
       }));
   });

@@ -1,0 +1,29 @@
+@font-face {
+  font-display: swap;
+  font-family: 'Impact-Bold';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/public/fonts/impact/impact.woff2') format('woff2'),
+    url('/public/fonts/impact/impact.woff') format('woff');
+}
+
+html {
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  /* height: 100vh; */
+}
+
+html,
+body {
+  scroll-behavior: smooth;
+}

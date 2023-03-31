@@ -18,10 +18,9 @@ const useTscAlias = async (buildDir) => {
     .on('addDir', runTscAlias)
     .on('add', runTscAlias)
     .on('change', runTscAlias);
-  // .on('unlink', runTscAlias)
-  // .on('unlinkDir', runTscAlias)
 
   console.log('* Waching files for using tsc-alias');
+  console.log('\n\n* START SERVER\n\n');
 };
 
 module.exports = useTscAlias;

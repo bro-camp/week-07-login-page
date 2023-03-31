@@ -26,11 +26,20 @@
       }
     },
     {
-      "label": "npm: tsc",
-      "detail": "tsc",
+      "label": "npm: start",
+      "detail": "node ./build/bin/www.js",
       "type": "npm",
-      "script": "tsc",
+      "script": "start",
+      "options": {
+        "env": {
+          "NODE_ENV": "production"
+        }
+      },
       "problemMatcher": [],
+      "group": {
+        "kind": "test",
+        "isDefault": false
+      },
       "presentation": {
         "echo": false,
         "reveal": "always",
@@ -41,11 +50,20 @@
       }
     },
     {
-      "label": "npm: build-helper",
-      "detail": "node ./scripts/build-helper.js",
+      "label": "npm: build:watch",
+      "detail": "node ./scripts/build-watch.js",
       "type": "npm",
-      "script": "build-helper",
+      "script": "build:watch",
+      "options": {
+        "env": {
+          "NODE_ENV": "development"
+        }
+      },
       "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
       "presentation": {
         "echo": false,
         "reveal": "always",
@@ -55,5 +73,29 @@
         "clear": true
       }
     },
+    {
+      "label": "npm: build",
+      "detail": "node ./scripts/build.js",
+      "type": "npm",
+      "script": "build",
+      "options": {
+        "env": {
+          "NODE_ENV": "production"
+        }
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "showReuseMessage": true,
+        "clear": true
+      }
+    }
   ]
 }

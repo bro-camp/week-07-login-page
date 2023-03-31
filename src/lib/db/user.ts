@@ -1,7 +1,6 @@
 import bcrypt from 'bcrypt';
 import User from '#models/user-model';
 import IUser from '#types/user-type';
-// import { IGetUserError, GetUserErrorEnum } from '#types/lib/db/user';
 
 export const addUser = (info: IUser) => {
   return new Promise<void>((resolve, reject) => {
@@ -15,18 +14,73 @@ export const addUser = (info: IUser) => {
       return;
     }
 
+    if (username.length < 2) {
+      reject('Username needs to be at least 2 characters long');
+      return;
+    }
+
+    if (username.length > 50) {
+      reject('Username cannot be longer than 50 characters');
+      return;
+    }
+
+    if (!/^([A-Za-z0-9]|_|-)([A-Za-z0-9]|_|-)*$/.test(username)) {
+      reject('Username is not in valid format');
+      return;
+    }
+
     if (password === undefined) {
       reject('Password is not given');
       return;
     }
 
-    if (!displayName === undefined) {
+    if (password.length < 12) {
+      reject('Password needs to be at least 12 characters long');
+      return;
+    }
+
+    if (password.length > 200) {
+      reject('Password cannot be longer than 200 characters');
+      return;
+    }
+
+    if (displayName === undefined) {
       reject('Display name is not given');
       return;
     }
 
-    if (!email === undefined) {
+    if (displayName.length < 2) {
+      reject('Display name needs to be at least 2 characters long');
+      return;
+    }
+
+    if (displayName.length > 50) {
+      reject('Display name cannot be longer than 50 characters');
+      return;
+    }
+
+    if (!/^[A-Za-z](\x20?[A-Za-z])*$/.test(displayName)) {
+      reject('Display name is not in valid format');
+      return;
+    }
+
+    if (email === undefined) {
       reject('Email is not given');
+      return;
+    }
+
+    if (email.length < 2) {
+      reject('Email needs to be at least 2 characters long');
+      return;
+    }
+
+    if (email.length > 100) {
+      reject('Email cannot be longer than 100 characters');
+      return;
+    }
+
+    if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      reject('Email is not in valid format');
       return;
     }
 

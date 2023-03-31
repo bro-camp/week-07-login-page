@@ -4,24 +4,26 @@
       <div class="col-5">
         <form action="/account/auth/login" method="post" class="p-3">
           <div class="d-flex justify-content-center">
-            <h2>LOGIN</h2>
+            <h2 class="text-center text-primary-emphasis">LOGIN</h2>
           </div>
           <div class="d-flex justify-content-center mt-3">
-            <div class="text-danger">{{errorMessage}}</div>
+            <div style="color: rgb(255, 98, 98)">{{errorMessage}}</div>
           </div>
           <div class="form-floating mt-3">
-            <input type="text" name="username" id="username" class="form-control" placeholder="username" required>
+            <input type="text" name="username" id="username" class="form-control" placeholder="username"
+              pattern="^([A-Za-z0-9]|_|-)([A-Za-z0-9]|_|-)*$" minlength="2" maxlength="50" required>
             <label for="username">Username</label>
           </div>
           <div class="form-floating mt-3">
-            <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+            <input type="password" name="password" id="password" class="form-control" placeholder="Password"
+              minlength="12" maxlength="200" required>
             <label for="password">Password</label>
           </div>
           <div class="d-flex justify-content-center mt-4">
-            <button type="submit" class="btn btn-dark">LOGIN</button>
+            <button type="submit" class="btn btn-dark border-secondary-subtle">LOGIN</button>
           </div>
           <div class="d-flex justify-content-center mt-3">
-            <a href="/account/auth/signup" class="link-primary">Register a new account</a>
+            <a href="/account/auth/signup" class="link-primary-emphasis text-center">Register a new account</a>
           </div>
         </form>
       </div>

@@ -8,6 +8,9 @@ router.get('/', (req, res) => {
 
   res.render(`${viewsDirPath}/pages/home`, {
     authStatus,
+    username: req.session.username,
+    displayName: req.session.displayName,
+    email: req.session.email,
   });
 });
 

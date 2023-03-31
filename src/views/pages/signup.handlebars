@@ -4,33 +4,36 @@
       <div class="col-5">
         <form action="/account/auth/signup" method="post" class="p-3">
           <div class="d-flex justify-content-center">
-            <h2>SIGN UP</h2>
+            <h2 class="text-center text-primary-emphasis">SIGN UP</h2>
           </div>
           <div class="d-flex justify-content-center mt-3">
-            <div class="text-danger">{{errorMessage}}</div>
+            <div style="color: rgb(255, 98, 98)">{{errorMessage}}</div>
           </div>
           <div class="form-floating mt-3">
             <input type="text" name="displayName" id="display-name" class="form-control" placeholder="John Doe"
-              required>
+              pattern="^[A-Za-z](\x20?[A-Za-z])*$" minlength="2" maxlength="50" required>
             <label for="display-name">Display Name</label>
           </div>
           <div class="form-floating mt-3">
-            <input type="text" name="username" id="username" class="form-control" placeholder="username" required>
+            <input type="text" name="username" id="username" class="form-control" placeholder="username"
+              pattern="^([A-Za-z0-9]|_|-)([A-Za-z0-9]|_|-)*$" minlength="2" maxlength="50" required>
             <label for="username">Username</label>
           </div>
           <div class="form-floating mt-3">
-            <input type="email" name="email" id="email" class="form-control" placeholder="user@example.com" required>
+            <input type="email" name="email" id="email" class="form-control" placeholder="user@example.com"
+              pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" minlength="2" maxlength="100" required>
             <label for="email">Email</label>
           </div>
           <div class="form-floating mt-3">
-            <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+            <input type="password" name="password" id="password" class="form-control" placeholder="Password"
+              minlength="12" maxlength="200" required>
             <label for="password">Password</label>
           </div>
           <div class="d-flex justify-content-center mt-4">
-            <button type="submit" class="btn btn-dark">SIGN UP</button>
+            <button type="submit" class="btn btn-dark border-secondary-subtle">SIGN UP</button>
           </div>
           <div class="d-flex justify-content-center mt-3">
-            <a href="/account/auth/login" class="link-primary">Already have an account?</a>
+            <a href="/account/auth/login" class="link-primary-emphasis text-center">Already have an account?</a>
           </div>
         </form>
       </div>

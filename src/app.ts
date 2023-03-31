@@ -1,12 +1,10 @@
 import express from 'express';
 import { engine } from 'express-handlebars';
 import createError from 'http-errors';
-// import path from 'path';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import mongoose from 'mongoose';
 import session from 'express-session';
-// import pino from 'pino';
 
 import { Server as HttpServer } from 'http';
 import { Server as HttpsServer } from 'https';
@@ -18,7 +16,7 @@ import accountAuthRouter from '#routers/account-auth-router';
 import accountLogoutRouter from '#routers/account-logout-router';
 import accountIsAuthorizedRouter from '#routers/account-is-authorized';
 import homeRouter from '#routers/home-router';
-import { dbUrl } from '#global/values';
+import { dbUrl, PORT } from '#global/values';
 import { sessionStore } from '#global/session-store';
 import { checkAuth, goHomeIfAuth } from '#lib/auth/auth';
 
@@ -58,60 +56,54 @@ const main = () => {
   app.use('/account/is-authorized', accountIsAuthorizedRouter);
 
   // catch 404 and forward to error handler
-  app.use((_req, _res, next) => {
-    next(createError(404));
+  app.use((req, _res, next) => {
+    if (req.app.get('env') === 'development') next(createError(404));
+    else next();
+  });
+
+  app.use((_req, res) => {
+    res.status(404);
+    res.render(`${viewsDirPath}/pages/error`, {
+      errorType: '404',
+      errorMessage: 'Not Found',
+    });
   });
 };
 
 export const configureMongoose = (
   server: HttpServer | HttpsServer,
 ): mongoose.Connection => {
-  console.log('MONGOOSE: Connecting...');
+  console.log('\n\n* MONGOOSE: Connecting...');
   mongoose
     .connect(dbUrl)
     .then(() => {
       main();
-      console.log('MONGOOSE: Connected');
+      console.log('* MONGOOSE: Connected');
+      console.log(`\n\n* SERVER STARTED COMPLETELY - [http://localhost:${PORT}]\n\n`);
     })
-    .catch((err) => console.log(`MONGOOSE: ${err}`));
+    .catch((err) => console.log(`\n\n* MONGOOSE: ${err}`));
 
   mongoose.connection
     .on('connected', () => {
-      console.log('MONGOOSE: Default connection is open to', dbUrl);
+      console.log('* MONGOOSE: Default connection is open to', dbUrl);
     })
     .on('disconnected', () => {
-      console.log('MONGOOSE: Default connection is disconnected');
+      console.log('* MONGOOSE: Default connection is disconnected');
     })
     .on('error', (err) => {
       console.log(
-        `MONGOOSE: Default connection has occured an error:\nError: ${err}`,
+        `\n\n* MONGOOSE: Default connection has occured an error:\nError: ${err}`,
       );
     })
     .on('close', () => {
-      console.log('MONGOOSE: Connection closed.');
-      console.log('EXPRESS: Closing HTTP server.');
+      console.log('* MONGOOSE: Connection closed.');
+      console.log('* EXPRESS: Closing HTTP server.');
       server.close((serverErr) => {
-        console.log('EXPRESS: HTTP server closed.');
-        if (serverErr) console.log(`\nSERVER ERROR: ${serverErr}`);
+        console.log('* EXPRESS: HTTP server closed.');
+        if (serverErr) console.log(`\n\nSERVER ERROR: ${serverErr}`);
         process.exit(serverErr ? 1 : 0);
       });
     });
 
   return mongoose.connection;
 };
-// main();
-
-// error handler
-// app.use((err: Errback, req: Request, res: Response, _next: NextFunction) => {
-//   // set locals, only providing error in development
-//   res.locals.message = err.message;
-//   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-//   // render the error page
-//   res.status(err.status || 500);
-//   res.render('error');
-// });
-
-// app.use((_req, res) => {
-//   res.status(404).send('404 ERROR');
-// });

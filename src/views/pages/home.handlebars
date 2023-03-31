@@ -1,19 +1,30 @@
-<section>
-  <div class="container-sm">
-    <div class="row  d-flex justify-content-center">
-      <div class="col-5">
-        <form action="/account/logout" method="post" class="p-3">
-          <div class="d-flex justify-content-center">
-            <h2>WELCOME</h2>
-          </div>
+<div class="h-100 d-flex flex-column">
 
-          <div class="d-flex justify-content-center mt-4">
-            <button type="submit" style="width: 10em;" class="btn btn-dark">
-              <h5>LOGOUT</h5>
-            </button>
-          </div>
+  <nav class="navbar bg-body-tertiary">
+    <div class="container-fluid">
+      <span class="navbar-brand">
+        <h2>{{displayName}}</h2>
+      </span>
+      <div class="d-flex">
+        <div class="d-flex flex-column me-3">
+          <span class="d-flex justify-content-end text-primary-emphasis">{{email}}</span>
+          <span class="d-flex justify-content-end">{{username}}</span>
+        </div>
+        <form action="/account/logout" method="post" class="p-0">
+          <button type="submit" style="width: 6em;" class="btn btn-dark border-secondary-subtle h-100">
+            <span class="text-center">LOGOUT</span>
+          </button>
         </form>
       </div>
     </div>
-  </div>
+  </nav>
+
+  <section
+    style='background-image: url("/public/img/nature-01.png"); background-position: center; background-repeat: no-repeat; background-size: cover; flex: 1; color: #4e8c3d80; font-size: 20vw; font-family: "Impact-Bold", monospace; font-weight: bolder; background-attachment: fixed; display: flex; justify-content: center; align-items: center;'>
+
+    WELCOME
+
+</div>
+
 </section>
+</div>
