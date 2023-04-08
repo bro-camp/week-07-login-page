@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Express } from 'express';
 import { engine } from 'express-handlebars';
 import createError from 'http-errors';
 import cookieParser from 'cookie-parser';
@@ -6,8 +6,6 @@ import morgan from 'morgan';
 import mongoose from 'mongoose';
 import session from 'express-session';
 
-import { Server as HttpServer } from 'http';
-import { Server as HttpsServer } from 'https';
 import nocache from 'nocache';
 import { viewsDirPath, publicDirPath } from '#global/paths';
 import indexRouter from '#routers/index-router';
@@ -16,13 +14,12 @@ import accountAuthRouter from '#routers/account-auth-router';
 import accountLogoutRouter from '#routers/account-logout-router';
 import accountIsAuthorizedRouter from '#routers/account-is-authorized';
 import homeRouter from '#routers/home-router';
-import { dbUrl, PORT } from '#global/values';
 import { sessionStore } from '#global/session-store';
 import { checkAuth, goHomeIfAuth } from '#lib/auth/auth';
 
-export const app = express();
+// export const app = express();
 
-const main = () => {
+const setupApp = (app: Express) => {
   app.engine(
     'handlebars',
     engine({
@@ -70,23 +67,58 @@ const main = () => {
   });
 };
 
-export const configureMongoose = (
-  server: HttpServer | HttpsServer,
-): mongoose.Connection => {
+const startApp = (app: Express, PORT: string | number) => {
+  const server = app.listen(PORT, () => {
+    console.log(
+      `\n\n* EXPRESS : Server started on http://localhost:${PORT}\n\n`,
+    );
+  });
+
+  return server;
+};
+
+const onMongooseConnected = (dbUrl: string, PORT: string | number) => {
+  console.log('* MONGOOSE: Default connection is open at', dbUrl);
+  const app = express();
+  setupApp(app);
+  const server = startApp(app, PORT);
+
+  const cleanup = (signal: string) => {
+    console.log('\n\n');
+    console.log(`* ${signal} signal received.`);
+
+    console.log('* EXPRESS: Closing HTTP server.');
+    server.close((serverErr) => {
+      if (serverErr) {
+        console.log(`\n\nSERVER ERROR: ${serverErr}`);
+        process.exit(serverErr ? 1 : 0);
+      }
+      console.log('* EXPRESS: HTTP server closed.');
+    });
+
+    console.log('* MONGOOSE: Closing connection.');
+    mongoose.connection.close();
+  };
+
+  process.on('SIGINT', () => cleanup('SIGINT'));
+  process.on('SIGTERM', () => cleanup('SIGTERM'));
+};
+
+export const setupAndStartMongoWithApp = (
+  dbUrl: string,
+  PORT: string | number,
+) => {
   console.log('\n\n* MONGOOSE: Connecting...');
+
   mongoose
     .connect(dbUrl)
     .then(() => {
-      main();
       console.log('* MONGOOSE: Connected');
-      console.log(`\n\n* SERVER STARTED COMPLETELY - [http://localhost:${PORT}]\n\n`);
     })
     .catch((err) => console.log(`\n\n* MONGOOSE: ${err}`));
 
   mongoose.connection
-    .on('connected', () => {
-      console.log('* MONGOOSE: Default connection is open to', dbUrl);
-    })
+    .on('connected', () => onMongooseConnected(dbUrl, PORT))
     .on('disconnected', () => {
       console.log('* MONGOOSE: Default connection is disconnected');
     })
@@ -97,13 +129,5 @@ export const configureMongoose = (
     })
     .on('close', () => {
       console.log('* MONGOOSE: Connection closed.');
-      console.log('* EXPRESS: Closing HTTP server.');
-      server.close((serverErr) => {
-        console.log('* EXPRESS: HTTP server closed.');
-        if (serverErr) console.log(`\n\nSERVER ERROR: ${serverErr}`);
-        process.exit(serverErr ? 1 : 0);
-      });
     });
-
-  return mongoose.connection;
 };
